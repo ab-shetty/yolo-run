@@ -3,6 +3,20 @@ YOLOv11 Training Script for Flex AI
 Handles zipped dataset extraction and training
 """
 
+import sys
+import subprocess
+
+# Fix OpenCV headless issue before importing anything else
+try:
+    import cv2
+except ImportError as e:
+    if "libGL.so.1" in str(e):
+        print("⚠️  Fixing OpenCV headless issue...")
+        subprocess.check_call([sys.executable, "-m", "pip", "uninstall", "-y", "opencv-python", "opencv-contrib-python"])
+        subprocess.check_call([sys.executable, "-m", "pip", "install", "opencv-python-headless"])
+        print("✅ OpenCV headless installed, restarting imports...")
+        import cv2
+
 import os
 import zipfile
 import argparse
