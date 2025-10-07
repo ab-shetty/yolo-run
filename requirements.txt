@@ -1,17 +1,10 @@
-# YOLOv11 Training Requirements for Flex AI
-
-# Install headless OpenCV FIRST and explicitly avoid the regular version
-opencv-python-headless>=4.7.0
-
-# Core dependencies (torch will be provided by the environment usually)
-torch>=2.0.0
-torchvision>=0.15.0
-
-# Ultralytics and its dependencies
-ultralytics>=8.0.0
-numpy>=1.23.0
-pillow>=9.0.0
-pyyaml>=6.0
-matplotlib>=3.7.0
-scipy>=1.10.0
-tqdm>=4.65.0
+opencv-python-headless
+ultralytics
+torch
+torchvision
+numpy
+pillow
+pyyaml
+matplotlib
+scipy
+tqdm
