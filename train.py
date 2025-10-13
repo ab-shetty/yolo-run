@@ -16,9 +16,8 @@ os.environ["QT_QPA_PLATFORM"] = "offscreen"    # prevents Qt GUI loading
 os.environ["MPLBACKEND"] = "Agg"               # matplotlib backend (if used)
 
 # Now import OpenCV
+sys.path.insert(0, "/usr/local/lib/python3.12/dist-packages")
 import cv2
-
-print("✅ OpenCV version:", cv2.__version__)
 
 
 
