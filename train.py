@@ -26,6 +26,16 @@ try:
 except Exception as e:
     print(f"⚠️ Warning: Could not fix dependencies: {e}")
 
+import torch, subprocess, os
+torch_path = os.path.dirname(torch.__file__)
+for root, _, files in os.walk(torch_path):
+    for f in files:
+        if f.endswith(".so"):
+            so_path = os.path.join(root, f)
+            break
+print("Checking binary:", so_path)
+print(subprocess.run(["strings", so_path, "|", "grep", "numpy"], shell=True, capture_output=True, text=True).stdout[:1000])
+
 
 import zipfile
 import argparse
