@@ -4,13 +4,6 @@ Handles zipped dataset extraction and training
 """
 
 import os
-import sys
-
-# Set environment variables BEFORE importing cv2/ultralytics
-os.environ["OPENCV_IO_ENABLE_OPENEXR"] = "0"
-os.environ["QT_QPA_PLATFORM"] = "offscreen"
-os.environ["MPLBACKEND"] = "Agg"
-
 import zipfile
 import argparse
 import yaml
