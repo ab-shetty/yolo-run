@@ -1,1 +1,3 @@
-git+https://github.com/parkitny/ultralytics-1.git@headless-install#egg=ultralytics[headless]
+numpy<2
+opencv-python-headless
+ultralytics
