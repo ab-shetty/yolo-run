@@ -26,6 +26,13 @@ try:
 except Exception as e:
     print(f"⚠️ Warning: Could not fix dependencies: {e}")
 
+import numpy, importlib.util, sys
+print("✅ NumPy runtime version:", numpy.__version__)
+print("📂 NumPy file:", numpy.__file__)
+print("sys.path order:")
+for p in sys.path:
+    print("  ", p)
+
 
 import torch, subprocess, os
 torch_path = os.path.dirname(torch.__file__)
