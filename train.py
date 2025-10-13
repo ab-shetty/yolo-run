@@ -3,31 +3,6 @@ YOLOv11 Training Script for Flex AI
 Handles zipped dataset extraction and training
 """
 
-import subprocess
-import sys
-
-# Fix NumPy and OpenCV before importing anything
-print("🔧 Fixing dependencies...")
-try:
-    # Force NumPy 1.x first
-    subprocess.run([sys.executable, "-m", "pip", "install", "numpy<2", "--force-reinstall"], 
-                   check=True, capture_output=True)
-    print("✅ NumPy 1.x installed")
-    
-    # Reinstall torch and torchvision to match NumPy 1.x
-    subprocess.run([sys.executable, "-m", "pip", "install", "torch", "torchvision", "--force-reinstall", "--no-deps"], 
-                   check=True, capture_output=True)
-    print("✅ PyTorch reinstalled")
-    
-    # Fix OpenCV
-    subprocess.run([sys.executable, "-m", "pip", "uninstall", "-y", "opencv-python"], 
-                   check=False, capture_output=True)
-    subprocess.run([sys.executable, "-m", "pip", "install", "opencv-python-headless"], 
-                   check=True, capture_output=True)
-    print("✅ OpenCV headless installed")
-except Exception as e:
-    print(f"⚠️ Warning: Could not fix dependencies: {e}")
-
 import os
 import zipfile
 import argparse
@@ -180,7 +155,6 @@ def train_yolo(args):
         workers=args.workers,
         pretrained=args.pretrained,
         optimizer=args.optimizer,
-        amp=False,  # Disable AMP to avoid NumPy compatibility check
         lr0=args.lr0,
         lrf=args.lrf,
         momentum=args.momentum,
