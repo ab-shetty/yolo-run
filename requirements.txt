@@ -1,8 +1,1 @@
-opencv-python-headless
 ultralytics
-numpy
-pillow
-pyyaml
-matplotlib
-scipy
-tqdm
