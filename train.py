@@ -32,6 +32,37 @@ try:
 except Exception as e:
     print(f"⚠️ Warning: Could not fix dependencies: {e}")
 
+import sys, site, importlib.util
+
+print("🔍 Checking NumPy environment...\n")
+
+# Show Python version and sys.path order
+print("Python executable:", sys.executable)
+print("Python version:", sys.version)
+print("\nsys.path (import order):")
+for p in sys.path:
+    print("  ", p)
+
+# Try to locate the numpy module file (even before importing it)
+numpy_spec = importlib.util.find_spec("numpy")
+if numpy_spec is None:
+    print("\n❌ NumPy not found on import path.")
+else:
+    print(f"\n📦 NumPy will be imported from: {numpy_spec.origin}")
+
+# Now import numpy safely and print version + actual file
+try:
+    import numpy as np
+    print("\n✅ NumPy successfully imported.")
+    print("   Version:", np.__version__)
+    print("   File:", np.__file__)
+except Exception as e:
+    print("\n❌ Failed to import NumPy:", e)
+
+# Also print user site-packages (where pip --user installs go)
+print("\nUser site-packages:", site.getusersitepackages())
+
+
 import zipfile
 import argparse
 import yaml
