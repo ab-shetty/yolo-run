@@ -1,2 +1,4 @@
-opencv-python-headless
+opencv-python-headless>=4.12 
 ultralytics
+opencv-python-headless>=4.12 
+
