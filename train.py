@@ -9,10 +9,15 @@ import sys
 # Fix NumPy and OpenCV before importing anything
 print("🔧 Fixing dependencies...")
 try:
-    # Force NumPy 1.x
+    # Force NumPy 1.x first
     subprocess.run([sys.executable, "-m", "pip", "install", "numpy<2", "--force-reinstall"], 
                    check=True, capture_output=True)
     print("✅ NumPy 1.x installed")
+    
+    # Reinstall torch and torchvision to match NumPy 1.x
+    subprocess.run([sys.executable, "-m", "pip", "install", "torch", "torchvision", "--force-reinstall", "--no-deps"], 
+                   check=True, capture_output=True)
+    print("✅ PyTorch reinstalled")
     
     # Fix OpenCV
     subprocess.run([sys.executable, "-m", "pip", "uninstall", "-y", "opencv-python"], 
@@ -175,6 +180,7 @@ def train_yolo(args):
         workers=args.workers,
         pretrained=args.pretrained,
         optimizer=args.optimizer,
+        amp=False,  # Disable AMP to avoid NumPy compatibility check
         lr0=args.lr0,
         lrf=args.lrf,
         momentum=args.momentum,
