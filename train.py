@@ -10,31 +10,16 @@ import os
 # Fix dependencies before importing anything
 print("🔧 Fixing dependencies...")
 
-# Set environment to prevent OpenCV from loading GUI libraries
-os.environ["OPENCV_IO_ENABLE_OPENEXR"] = "0"
-os.environ["QT_QPA_PLATFORM"] = "offscreen"
-os.environ["MPLBACKEND"] = "Agg"
 
+os.environ["OPENCV_IO_ENABLE_OPENEXR"] = "0"   # disables OpenEXR support
+os.environ["QT_QPA_PLATFORM"] = "offscreen"    # prevents Qt GUI loading
+os.environ["MPLBACKEND"] = "Agg"               # matplotlib backend (if used)
 
-print("Fixing OpenCV headless safely...")
+# Now import OpenCV
+import cv2
 
-try:
-    # Uninstall any conflicting OpenCV versions
-    subprocess.run([
-        sys.executable, "-m", "pip", "uninstall", "-y",
-        "opencv-python", "opencv-contrib-python", "opencv-python-headless"
-    ], check=False, capture_output=True)
+print("✅ OpenCV version:", cv2.__version__)
 
-    # Reinstall a NumPy 2-compatible OpenCV headless
-    subprocess.run([
-        sys.executable, "-m", "pip", "install",
-        "--force-reinstall", "--no-deps",
-        "opencv-python-headless>=4.12.0"
-    ], check=True, capture_output=True)
-
-    print("✅ OpenCV headless installed safely for NumPy 2.x")
-except Exception as e:
-    print(f"⚠️ Could not fix OpenCV: {e}")
 
 
 
