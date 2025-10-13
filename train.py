@@ -62,6 +62,25 @@ except Exception as e:
 # Also print user site-packages (where pip --user installs go)
 print("\nUser site-packages:", site.getusersitepackages())
 
+import sys, subprocess
+
+print("🔧 Forcing a true NumPy 1.x downgrade...")
+
+# Uninstall all visible NumPy versions
+subprocess.run([sys.executable, "-m", "pip", "uninstall", "-y", "numpy"], check=False)
+
+# Force reinstall from PyPI, ignoring existing files and caches
+subprocess.run([
+    sys.executable, "-m", "pip", "install", "--no-cache-dir", "--force-reinstall", "numpy<2"
+], check=True)
+
+# Verify what’s actually imported
+import numpy as np
+print("✅ NumPy now loaded:", np.__version__, "from", np.__file__)
+if np.__version__.startswith("2."):
+    raise RuntimeError("❌ Still using NumPy 2.x — environment layer may be immutable.")
+
+
 
 import zipfile
 import argparse
