@@ -1,2 +1,1 @@
-ultralytics
-numpy<2
+git+https://github.com/parkitny/ultralytics-1.git@headless-install#egg=ultralytics[headless]
