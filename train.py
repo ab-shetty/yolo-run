@@ -15,13 +15,7 @@ os.environ["OPENCV_IO_ENABLE_OPENEXR"] = "0"
 os.environ["QT_QPA_PLATFORM"] = "offscreen"
 os.environ["MPLBACKEND"] = "Agg"
 
-try:
-    # Force NumPy 1.x in the user site-packages (where pip installs)
-    print("Forcing NumPy 1.x...")
-    subprocess.run([sys.executable, "-m", "pip", "install", "--upgrade", "--force-reinstall", "numpy<2"], 
-                   check=True, capture_output=True)
-    print("✅ NumPy 1.x forced")
-    
+try:    
     # Fix OpenCV - uninstall GUI version and install headless
     print("Fixing OpenCV...")
     subprocess.run([sys.executable, "-m", "pip", "uninstall", "-y", "opencv-python", "opencv-contrib-python"], 
@@ -31,55 +25,6 @@ try:
     print("✅ OpenCV headless installed")
 except Exception as e:
     print(f"⚠️ Warning: Could not fix dependencies: {e}")
-
-import sys, site, importlib.util
-
-print("🔍 Checking NumPy environment...\n")
-
-# Show Python version and sys.path order
-print("Python executable:", sys.executable)
-print("Python version:", sys.version)
-print("\nsys.path (import order):")
-for p in sys.path:
-    print("  ", p)
-
-# Try to locate the numpy module file (even before importing it)
-numpy_spec = importlib.util.find_spec("numpy")
-if numpy_spec is None:
-    print("\n❌ NumPy not found on import path.")
-else:
-    print(f"\n📦 NumPy will be imported from: {numpy_spec.origin}")
-
-# Now import numpy safely and print version + actual file
-try:
-    import numpy as np
-    print("\n✅ NumPy successfully imported.")
-    print("   Version:", np.__version__)
-    print("   File:", np.__file__)
-except Exception as e:
-    print("\n❌ Failed to import NumPy:", e)
-
-# Also print user site-packages (where pip --user installs go)
-print("\nUser site-packages:", site.getusersitepackages())
-
-import sys, subprocess
-
-print("🔧 Forcing a true NumPy 1.x downgrade...")
-
-# Uninstall all visible NumPy versions
-subprocess.run([sys.executable, "-m", "pip", "uninstall", "-y", "numpy"], check=False)
-
-# Force reinstall from PyPI, ignoring existing files and caches
-subprocess.run([
-    sys.executable, "-m", "pip", "install", "--no-cache-dir", "--force-reinstall", "numpy<2"
-], check=True)
-
-# Verify what’s actually imported
-import numpy as np
-print("✅ NumPy now loaded:", np.__version__, "from", np.__file__)
-if np.__version__.startswith("2."):
-    raise RuntimeError("❌ Still using NumPy 2.x — environment layer may be immutable.")
-
 
 
 import zipfile
