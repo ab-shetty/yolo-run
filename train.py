@@ -4,20 +4,22 @@ Handles zipped dataset extraction and training
 """
 
 import subprocess
+
+
 import sys
-import os
-
-# Fix dependencies before importing anything
-print("🔧 Fixing dependencies...")
-
-
-os.environ["OPENCV_IO_ENABLE_OPENEXR"] = "0"   # disables OpenEXR support
-os.environ["QT_QPA_PLATFORM"] = "offscreen"    # prevents Qt GUI loading
-os.environ["MPLBACKEND"] = "Agg"               # matplotlib backend (if used)
-
-# Now import OpenCV
+# Insert the user site-packages (where pip installs) at the front of sys.path
 sys.path.insert(0, "/usr/local/lib/python3.12/dist-packages")
+
+import os
+os.environ["OPENCV_IO_ENABLE_OPENEXR"] = "0"
+os.environ["QT_QPA_PLATFORM"] = "offscreen"
+os.environ["MPLBACKEND"] = "Agg"
+
 import cv2
+
+print("OpenCV loaded from:", cv2.__file__)
+print("OpenCV version:", cv2.__version__)
+
 
 
 
