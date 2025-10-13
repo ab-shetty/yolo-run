@@ -1,2 +1,2 @@
 ultralytics
-numpy
+numpy<2
