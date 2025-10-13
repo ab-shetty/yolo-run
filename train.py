@@ -16,15 +16,21 @@ os.environ["QT_QPA_PLATFORM"] = "offscreen"
 os.environ["MPLBACKEND"] = "Agg"
 
 try:
+    # Force NumPy 1.x in the user site-packages (where pip installs)
+    print("Forcing NumPy 1.x...")
+    subprocess.run([sys.executable, "-m", "pip", "install", "--upgrade", "--force-reinstall", "numpy<2"], 
+                   check=True, capture_output=True)
+    print("✅ NumPy 1.x forced")
+    
     # Fix OpenCV - uninstall GUI version and install headless
     print("Fixing OpenCV...")
     subprocess.run([sys.executable, "-m", "pip", "uninstall", "-y", "opencv-python", "opencv-contrib-python"], 
                    check=False, capture_output=True)
-    subprocess.run([sys.executable, "-m", "pip", "install", "opencv-python-headless", "--force-reinstall"], 
+    subprocess.run([sys.executable, "-m", "pip", "install", "--force-reinstall", "opencv-python-headless"], 
                    check=True, capture_output=True)
     print("✅ OpenCV headless installed")
 except Exception as e:
-    print(f"⚠️ Warning: Could not fix OpenCV: {e}")
+    print(f"⚠️ Warning: Could not fix dependencies: {e}")
 
 import zipfile
 import argparse
