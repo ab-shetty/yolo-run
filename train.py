@@ -3,7 +3,29 @@ YOLOv11 Training Script for Flex AI
 Handles zipped dataset extraction and training
 """
 
+import subprocess
+import sys
 import os
+
+# Fix dependencies before importing anything
+print("🔧 Fixing dependencies...")
+
+# Set environment to prevent OpenCV from loading GUI libraries
+os.environ["OPENCV_IO_ENABLE_OPENEXR"] = "0"
+os.environ["QT_QPA_PLATFORM"] = "offscreen"
+os.environ["MPLBACKEND"] = "Agg"
+
+try:
+    # Fix OpenCV - uninstall GUI version and install headless
+    print("Fixing OpenCV...")
+    subprocess.run([sys.executable, "-m", "pip", "uninstall", "-y", "opencv-python", "opencv-contrib-python"], 
+                   check=False, capture_output=True)
+    subprocess.run([sys.executable, "-m", "pip", "install", "opencv-python-headless", "--force-reinstall"], 
+                   check=True, capture_output=True)
+    print("✅ OpenCV headless installed")
+except Exception as e:
+    print(f"⚠️ Warning: Could not fix OpenCV: {e}")
+
 import zipfile
 import argparse
 import yaml
@@ -155,6 +177,7 @@ def train_yolo(args):
         workers=args.workers,
         pretrained=args.pretrained,
         optimizer=args.optimizer,
+        amp=False,  # Disable AMP to avoid NumPy compatibility check
         lr0=args.lr0,
         lrf=args.lrf,
         momentum=args.momentum,
