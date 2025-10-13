@@ -15,23 +15,27 @@ os.environ["OPENCV_IO_ENABLE_OPENEXR"] = "0"
 os.environ["QT_QPA_PLATFORM"] = "offscreen"
 os.environ["MPLBACKEND"] = "Agg"
 
-try:
-    # Fix OpenCV - uninstall GUI version and install headless
-    print("Fixing OpenCV...")
-    subprocess.run([sys.executable, "-m", "pip", "uninstall", "-y", "opencv-python", "opencv-contrib-python"], 
-                   check=False, capture_output=True)
-    subprocess.run([sys.executable, "-m", "pip", "install", "--force-reinstall", "opencv-python-headless"], 
-                   check=True, capture_output=True)
-    print("✅ OpenCV headless installed")
-except Exception as e:
-    print(f"⚠️ Warning: Could not fix dependencies: {e}")
 
-import numpy, importlib.util, sys
-print("✅ NumPy runtime version:", numpy.__version__)
-print("📂 NumPy file:", numpy.__file__)
-print("sys.path order:")
-for p in sys.path:
-    print("  ", p)
+print("Fixing OpenCV headless safely...")
+
+try:
+    # Uninstall any conflicting OpenCV versions
+    subprocess.run([
+        sys.executable, "-m", "pip", "uninstall", "-y",
+        "opencv-python", "opencv-contrib-python", "opencv-python-headless"
+    ], check=False, capture_output=True)
+
+    # Reinstall a NumPy 2-compatible OpenCV headless
+    subprocess.run([
+        sys.executable, "-m", "pip", "install",
+        "--force-reinstall", "--no-deps",
+        "opencv-python-headless>=4.12.0"
+    ], check=True, capture_output=True)
+
+    print("✅ OpenCV headless installed safely for NumPy 2.x")
+except Exception as e:
+    print(f"⚠️ Could not fix OpenCV: {e}")
+
 
 
 import torch, subprocess, os
