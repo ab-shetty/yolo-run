@@ -12,16 +12,6 @@ from pathlib import Path
 from ultralytics import YOLO
 
 # -------------------------
-# Headless / safe environment
-# -------------------------
-os.environ["OPENCV_IO_ENABLE_OPENEXR"] = "0"
-os.environ["QT_QPA_PLATFORM"] = "offscreen"
-os.environ["MPLBACKEND"] = "Agg"
-
-# Do NOT import cv2 here — it may trigger libGL.so.1 error
-# Ultralytics internally uses headless OpenCV if needed
-
-# -------------------------
 # Dataset extraction
 # -------------------------
 def extract_dataset(zip_path, extract_to="/tmp/dataset"):
