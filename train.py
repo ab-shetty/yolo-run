@@ -116,6 +116,17 @@ def train_yolo(args):
         copy_paste=args.copy_paste,
     )
 
+    checkpoint_dir = os.path.join(args.out_dir, args.name, "weights")
+    print(f"\n📦 Checkpoints saved to: {checkpoint_dir}")
+    
+    if os.path.exists(checkpoint_dir):
+        checkpoints = os.listdir(checkpoint_dir)
+        print(f"📄 Available checkpoints:")
+        for ckpt in sorted(checkpoints):
+            ckpt_path = os.path.join(checkpoint_dir, ckpt)
+            size_mb = os.path.getsize(ckpt_path) / (1024 * 1024)
+            print(f"   - {ckpt} ({size_mb:.2f} MB)")
+
     print("="*60)
     print("✅ Training Complete!")
     print("="*60)
@@ -135,7 +146,7 @@ def train_yolo(args):
 def main():
     parser = argparse.ArgumentParser(description='Train YOLOv11 on Flex AI')
     parser.add_argument('--dataset_dir', type=str, default='/input')
-    parser.add_argument('--out_dir', type=str, default='/output-checkpoint')
+    parser.add_argument('--out_dir', type=str, default='/output-checkpoints')
     parser.add_argument('--model', type=str, default='yolo11n.pt',
                         choices=['yolo11n.pt','yolo11s.pt','yolo11m.pt','yolo11l.pt','yolo11x.pt'])
     parser.add_argument('--pretrained', type=bool, default=True)
