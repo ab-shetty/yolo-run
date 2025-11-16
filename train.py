@@ -146,7 +146,9 @@ def train_yolo(args):
 def main():
     parser = argparse.ArgumentParser(description='Train YOLOv11 on Flex AI')
     parser.add_argument('--dataset_dir', type=str, default='/input')
-    parser.add_argument('--out_dir', type=str, default='/output-checkpoints')
+    parser.add_argument('--out_dir', type=str, 
+                        default=os.environ.get('FLEXAI_OUTPUT_CHECKPOINT_DIR', '/output-checkpoints'),
+                        help='Output directory for checkpoints')
     parser.add_argument('--model', type=str, default='yolo11n.pt',
                         choices=['yolo11n.pt','yolo11s.pt','yolo11m.pt','yolo11l.pt','yolo11x.pt'])
     parser.add_argument('--pretrained', type=bool, default=True)
